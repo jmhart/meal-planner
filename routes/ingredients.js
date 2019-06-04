@@ -17,4 +17,15 @@ router.post("/", async (req, res) => {
   res.send(ingredient);
 });
 
+router.delete("/:id", async (req, res) => {
+  const ingredient = await Ingredient.findByIdAndRemove(req.params.id);
+
+  if (!ingredient)
+    return res
+      .status(404)
+      .send("The ingredient with the given ID was not found.");
+
+  res.send(ingredient);
+});
+
 module.exports = router;

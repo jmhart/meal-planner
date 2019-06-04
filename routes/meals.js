@@ -19,6 +19,24 @@ router.post("/", async (req, res) => {
   });
 
   meal = await meal.save();
+
+  res.send(meal);
+});
+
+router.put("/:id", async (req, res) => {
+  const ingredients = await Ingredient.find({
+    _id: { $in: req.body.ingredients }
+  });
+
+  const meal = await Meal.findByIdAndUpdate(
+    req.params.id,
+    { name: req.body.name, ingredients: ingredients },
+    { new: true }
+  );
+
+  if (!meal)
+    return res.status(404).send("The meal with the given ID was not found.");
+
   res.send(meal);
 });
 
